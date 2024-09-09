@@ -14,20 +14,20 @@ export const Shape = ({ data }) => {
   const validCellCount = data.flat().filter(item => item !== 0).length
 
   const [colorArray, setColorArray] = useState(Array(rowCount).fill().map(() => Array(columnCount).fill('transparent')))
-  const selectionQueueRef = useRef(new Queue())
-  const selectionQueue = selectionQueueRef.current;
+  const selectionOrderQueueRef = useRef(new Queue())
+  const selectionOrderQueue = selectionOrderQueueRef.current;
 
   const [deselecting, setDeselecting] = useState(false)
 
   const selectCell = useCallback((rowIndex, colIndex) => {
-	selectionQueue.enqueue([rowIndex, colIndex])
-  }, [selectionQueue])
+	selectionOrderQueue.enqueue([rowIndex, colIndex])
+  }, [selectionOrderQueue])
 
   const deselectCells = useCallback(async () => {
 	
 	// Approach1: With this approach, it will wait for 5 seconds and then deselect all cells at the same time.
-	// for(let i = selectionQueue.headIndex; i < selectionQueue.tailIndex; i++ ) {
-	// 	const removedPosition = selectionQueue.dequeue();
+	// for(let i = selectionOrderQueue.headIndex; i < selectionOrderQueue.tailIndex; i++ ) {
+	// 	const removedPosition = selectionOrderQueue.dequeue();
 	// 	const updatedcolorArray = [...colorArray];
 	// 	updatedcolorArray[removedPosition[0]][removedPosition[1]] = 'transparent';
 	// 	setTimeout(() => {
@@ -36,8 +36,8 @@ export const Shape = ({ data }) => {
 	// }
 
 	// Approach2: DOUBT
-	// for(let i = selectionQueue.headIndex; i < selectionQueue.tailIndex; i++ ) {
-	// 	const removedPosition = selectionQueue.dequeue();
+	// for(let i = selectionOrderQueue.headIndex; i < selectionOrderQueue.tailIndex; i++ ) {
+	// 	const removedPosition = selectionOrderQueue.dequeue();
 	// 	const updatedcolorArray = [...colorArray];
 	// 	updatedcolorArray[removedPosition[0]][removedPosition[1]] = 'transparent';
 	// 	setTimeout(() => {
@@ -46,22 +46,22 @@ export const Shape = ({ data }) => {
 	// }
 
 	// Approach3: DOUBT
-	for(let i = selectionQueue.headIndex; i < selectionQueue.tailIndex; i++ ) {
-		const removedPosition = selectionQueue.dequeue();
+	for(let i = selectionOrderQueue.headIndex; i < selectionOrderQueue.tailIndex; i++ ) {
+		const removedPosition = selectionOrderQueue.dequeue();
 		const updatedcolorArray = [...colorArray];
 		updatedcolorArray[removedPosition[0]][removedPosition[1]] = 'transparent';
 		setColorArray(updatedcolorArray);
 		await delay(1000);
 	}
 	setDeselecting(false)
-  }, [selectionQueue, colorArray])
+  }, [selectionOrderQueue, colorArray])
 
   useEffect(() => {
-	if(selectionQueue.size() === validCellCount && !deselecting) {
+	if(selectionOrderQueue.size() === validCellCount && !deselecting) {
 		setDeselecting(true)
 		deselectCells()
 	}
-  }, [selectionQueue, deselectCells, deselecting])
+  }, [selectionOrderQueue, deselectCells, deselecting])
 
   const onClick = useCallback((rowIndex, colIndex) => {
 	if(deselecting) {
