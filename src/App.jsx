@@ -1,5 +1,5 @@
 import './App.css'
-import {Shape} from './Shape'
+import Shape from './Shape';
 
 const BOX_DATA = [
   [1, 1, 1],
