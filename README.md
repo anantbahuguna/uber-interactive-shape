@@ -63,6 +63,6 @@
     }
   })
   ```
-- Use html `data` attributes. They are accessible in both `JS` and `CSS` files.
+- Use html `data` attributes. They are accessible in both `JS` and `CSS` files. *But it's only limited to `content` property typically for pseudo elements.*
 - Can use recursion with setTimeout. Clear timeout using `ref`
 - Add transition styles 
